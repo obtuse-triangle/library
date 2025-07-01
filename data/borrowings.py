@@ -37,8 +37,7 @@ def return_borrowing(title, borrower):
   cur.execute(sql, (title, borrower))
   row = cur.fetchone()
   if not row:
-    print("대출내역없음")
-    return False
+    raise ValueError("대출내역이 없습니다.")
   sql = 'delete from borrowings where borrow_id = ?'
   cur.execute(sql, (row[0],))
   sql = 'update books set available = available + 1 where book_id = ?'
