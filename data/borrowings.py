@@ -1,3 +1,4 @@
+import datetime
 from . import con, cur
 
 
@@ -38,8 +39,8 @@ def return_borrowing(title, borrower):
   row = cur.fetchone()
   if not row:
     raise ValueError("대출내역이 없습니다.")
-  sql = 'delete from borrowings where borrow_id = ?'
-  cur.execute(sql, (row[0],))
+  sql = 'update borrowings set returned_at = ? where borrow_id = ?'
+  cur.execute(sql, (datetime.datetime.now(), row[0]))
   sql = 'update books set available = available + 1 where book_id = ?'
   cur.execute(sql, (row[1],))
   con.commit()
